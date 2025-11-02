@@ -1,16 +1,12 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {
-      colors: {
-        primary: '#ee4d2d',
-        secondary: '#f53d2d',
-      }
-    },
+    extend: {},
   },
   plugins: [],
-}
+};
