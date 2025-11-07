@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { authAPI } from "../../services/api"; // 🔥 dùng API mock hoặc thật
+import { authAPI } from "../../services/api";
+import { toast } from "react-toastify"; // ✅ thêm import này
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -39,8 +40,14 @@ export default function RegisterPage() {
       });
 
       console.log("✅ Register success:", res.data);
-      alert("Đăng ký thành công! Hãy đăng nhập để tiếp tục.");
-      navigate("/auth/login");
+
+      // ✅ Hiển thị thông báo dạng toast (tự tắt sau 1.5 giây)
+      toast.success("Đăng ký thành công! Hãy đăng nhập để tiếp tục.");
+
+      // ✅ Sau khi hiện thông báo ngắn, tự động chuyển hướng
+      setTimeout(() => {
+        navigate("/auth/login");
+      }, 1500);
     } catch (err) {
       console.error("❌ Register error:", err);
       const msg =

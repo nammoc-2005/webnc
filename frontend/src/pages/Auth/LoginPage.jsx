@@ -8,6 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState(""); // ✅ thêm state cho thông báo thành công
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,8 +20,14 @@ export default function LoginPage() {
       const res = await authAPI.login({ email, password });
       console.log("✅ Login success:", res.data);
 
-      alert("Đăng nhập thành công!");
-      navigate("/user/home"); // quay về trang chủ sau khi login
+      // ✅ Hiển thị thông báo ngắn gọn thay vì alert
+      setSuccessMsg("Đăng nhập thành công!");
+
+      // ⏳ Sau 1.5 giây thì chuyển trang
+      setTimeout(() => {
+        setSuccessMsg("");
+        navigate("/user/home");
+      }, 1500);
     } catch (err) {
       console.error("❌ Login error:", err);
       const msg =
@@ -34,11 +41,18 @@ export default function LoginPage() {
 
   return (
     <motion.div
-      className="flex justify-center items-center min-h-screen bg-gradient-to-br from-orange-400 to-orange-600"
+      className="flex justify-center items-center min-h-screen bg-gradient-to-br from-orange-400 to-orange-600 relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
+      {/* ✅ Thông báo đăng nhập thành công (hiện chớp nhoáng) */}
+      {successMsg && (
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-2 rounded-lg shadow-md text-sm font-medium">
+          {successMsg}
+        </div>
+      )}
+
       <motion.div
         className="bg-white shadow-2xl rounded-2xl px-8 py-10 w-[90%] max-w-md"
         initial={{ y: 50, opacity: 0 }}

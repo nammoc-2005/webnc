@@ -2,6 +2,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Layout
 import Header from "./components/layout/Header";
@@ -13,7 +15,6 @@ import HomePage from "./pages/Home/HomePage";
 // Trang người dùng sau đăng nhập
 import UserHomePage from "./pages/Home/UserHomePage";
 
-
 // Trang đăng nhập / đăng ký
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
@@ -21,8 +22,15 @@ import RegisterPage from "./pages/Auth/RegisterPage";
 // Trang profile
 import ProfilePage from "./pages/Profile/ProfilePage";
 
-//Trang giỏ hàng
+// Trang giỏ hàng
 import CartPage from "./pages/Cart/CartPage";
+
+//Trang thanh toán
+import CheckoutPage from "./pages/Checkout/CheckoutPage";
+
+//Trang chi tiểt sản phẩm
+import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
+
 
 
 function AnimatedRoutes() {
@@ -57,7 +65,7 @@ function AnimatedRoutes() {
               }
             />
 
-            {/* Trang chủ cho người dùng đã đăng nhập */}
+            {/* Trang chủ cho người dùng */}
             <Route
               path="/user/home"
               element={
@@ -67,7 +75,7 @@ function AnimatedRoutes() {
               }
             />
 
-            {/* Trang đăng nhập */}
+            {/* Đăng nhập */}
             <Route
               path="/auth/login"
               element={
@@ -77,7 +85,7 @@ function AnimatedRoutes() {
               }
             />
 
-            {/* Trang đăng ký */}
+            {/* Đăng ký */}
             <Route
               path="/auth/register"
               element={
@@ -86,6 +94,7 @@ function AnimatedRoutes() {
                 </motion.div>
               }
             />
+
             {/* Trang Profile */}
             <Route
               path="/profile"
@@ -95,17 +104,36 @@ function AnimatedRoutes() {
                 </motion.div>
               }
             />
-            {/* Trang cart*/}
+
+            {/* Trang Cart */}
             <Route
               path="/cart"
               element={
                 <motion.div {...pageTransition}>
                   <CartPage />
                 </motion.div>
-  }
-/>
+              }
+            />
 
+            {/* Trang Checkout */}
+            <Route
+              path="/checkout"
+              element={
+                <motion.div {...pageTransition}>
+                  <CheckoutPage />
+                </motion.div>
+            }
+            />
 
+            {/* Trang Chi tiết sản phẩm */}
+            <Route
+              path="/product/:id"
+              element={
+                <motion.div {...pageTransition}>
+                  <ProductDetailPage />
+                </motion.div>
+             }
+            />
 
           </Routes>
         </AnimatePresence>
@@ -121,6 +149,7 @@ export default function App() {
     <Router>
       <div className="flex flex-col min-h-screen bg-gray-50">
         <AnimatedRoutes />
+        <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
       </div>
     </Router>
   );

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSearch } from "../../context/SearchContext";
 import { useState, useEffect } from "react";
+import { useCart } from "../../context/CartContext"; // ✅ thêm dòng này
 
 export default function Header() {
   const { searchTerm, setSearchTerm } = useSearch();
@@ -11,6 +12,7 @@ export default function Header() {
   const [user, setUser] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [hideTimer, setHideTimer] = useState(null);
+  const { getTotalQuantity } = useCart(); // ✅ lấy số lượng giỏ hàng
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -104,7 +106,9 @@ export default function Header() {
                   alt="Avatar"
                   className="w-9 h-9 rounded-full border-2 border-white hover:shadow-lg transition-all cursor-pointer"
                 />
-                <span className="font-semibold">{user.name || "Người dùng"}</span>
+                <span className="font-semibold">
+                  {user.name || "Người dùng"}
+                </span>
               </div>
 
               {/* Dropdown menu */}
@@ -115,7 +119,7 @@ export default function Header() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  onMouseEnter={() => setShowMenu(true)} // Giữ menu mở khi di chuột trong
+                  onMouseEnter={() => setShowMenu(true)}
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
@@ -138,14 +142,24 @@ export default function Header() {
             </div>
           )}
 
-          {/* Giỏ hàng */}
+          {/* 🛒 Giỏ hàng có hiệu ứng nảy số */}
           <motion.div
             whileHover={{ scale: 1.1 }}
             className="relative cursor-pointer"
             onClick={() => navigate("/cart")}
           >
             <span className="text-2xl">🛒</span>
-            <span className="absolute -top-2 -right-2 bg-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full"></span>
+
+            {getTotalQuantity() > 0 && (
+              <motion.span
+                key={getTotalQuantity()} // 👈 giúp animate lại khi số thay đổi
+                initial={{ scale: 0 }}
+                animate={{ scale: [1.5, 1], transition: { duration: 0.3 } }}
+                className="absolute -top-2 -right-2 bg-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full"
+              >
+                {getTotalQuantity()}
+              </motion.span>
+            )}
           </motion.div>
         </div>
       </div>
